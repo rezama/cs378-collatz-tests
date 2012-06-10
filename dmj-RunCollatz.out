@@ -1,8 +1,8 @@
-==13758== Memcheck, a memory error detector
-==13758== Copyright (C) 2002-2009, and GNU GPL'd, by Julian Seward et al.
-==13758== Using Valgrind-3.6.0.SVN-Debian and LibVEX; rerun with -h for copyright info
-==13758== Command: ../cs378-collatz/RunCollatz.c++.app
-==13758== 
+==17361== Memcheck, a memory error detector
+==17361== Copyright (C) 2002-2009, and GNU GPL'd, by Julian Seward et al.
+==17361== Using Valgrind-3.6.0.SVN-Debian and LibVEX; rerun with -h for copyright info
+==17361== Command: ../cs378-collatz/RunCollatz.c++.app
+==17361== 
 1 999999 525
 999999 1 525
 1 1 1
@@ -2069,18 +2069,18 @@
 759879 859879 525
 601654 701654 447
 797458 897458 525
-==13758== 
-==13758== HEAP SUMMARY:
-==13758==     in use at exit: 122,880 bytes in 6 blocks
-==13758==   total heap usage: 6 allocs, 0 frees, 122,880 bytes allocated
-==13758== 
-==13758== LEAK SUMMARY:
-==13758==    definitely lost: 0 bytes in 0 blocks
-==13758==    indirectly lost: 0 bytes in 0 blocks
-==13758==      possibly lost: 0 bytes in 0 blocks
-==13758==    still reachable: 122,880 bytes in 6 blocks
-==13758==         suppressed: 0 bytes in 0 blocks
-==13758== Rerun with --leak-check=full to see details of leaked memory
-==13758== 
-==13758== For counts of detected and suppressed errors, rerun with: -v
-==13758== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 18 from 7)
+==17361== 
+==17361== HEAP SUMMARY:
+==17361==     in use at exit: 122,880 bytes in 6 blocks
+==17361==   total heap usage: 6 allocs, 0 frees, 122,880 bytes allocated
+==17361== 
+==17361== LEAK SUMMARY:
+==17361==    definitely lost: 0 bytes in 0 blocks
+==17361==    indirectly lost: 0 bytes in 0 blocks
+==17361==      possibly lost: 0 bytes in 0 blocks
+==17361==    still reachable: 122,880 bytes in 6 blocks
+==17361==         suppressed: 0 bytes in 0 blocks
+==17361== Rerun with --leak-check=full to see details of leaked memory
+==17361== 
+==17361== For counts of detected and suppressed errors, rerun with: -v
+==17361== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 18 from 7)
