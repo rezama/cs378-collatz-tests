@@ -1,0 +1,221 @@
+// --------------------------------
+// projects/collatz/TestCollatz.c++
+// Copyright (C) 2011
+// Glenn P. Downing
+// --------------------------------
+
+/*
+To test the program:
+    % ls /usr/include/cppunit/
+    ...
+    HelperMacros.h
+    ...
+    % locate libcppunit.a
+    /usr/lib/libcppunit.a
+    % g++ -ansi -pedantic -lcppunit -ldl -Wall TestCollatz.c++ -o TestCollatz.c++.app
+    % valgrind TestCollatz.c++.app >& TestCollatz.c++.out
+*/
+
+// --------
+// includes
+// --------
+
+#include <iostream> // cout, endl
+#include <sstream>  // istringtstream, ostringstream
+#include <string>   // ==
+
+#include "cppunit/extensions/HelperMacros.h" // CPPUNIT_TEST, CPPUNIT_TEST_SUITE, CPPUNIT_TEST_SUITE_END
+#include "cppunit/TestFixture.h"             // TestFixture
+#include "cppunit/TextTestRunner.h"          // TextTestRunner
+
+#include "Collatz.h"
+
+// -----------
+// TestCollatz
+// -----------
+
+struct TestCollatz : CppUnit::TestFixture {
+    // ----
+    // read
+    // ----
+
+    void test_read_multiline() {
+        std::istringstream in("1 10\n10 1\n10 10\n");
+        int first;
+        int second;
+        CPPUNIT_ASSERT_EQUAL(true, collatz_read(in, first, second));
+        CPPUNIT_ASSERT_EQUAL(1, first);
+        CPPUNIT_ASSERT_EQUAL(10, second);
+        CPPUNIT_ASSERT_EQUAL(true, collatz_read(in, first, second));
+        CPPUNIT_ASSERT_EQUAL(10, first);
+        CPPUNIT_ASSERT_EQUAL(1, second);
+        CPPUNIT_ASSERT_EQUAL(true, collatz_read(in, first, second));
+        CPPUNIT_ASSERT_EQUAL(10, first);
+        CPPUNIT_ASSERT_EQUAL(10, second);
+        CPPUNIT_ASSERT_EQUAL(false, collatz_read(in, first, second));
+        CPPUNIT_ASSERT_EQUAL(10, first);
+        CPPUNIT_ASSERT_EQUAL(10, second);
+    }
+
+    void test_read_no_terminal_newline() {
+        std::istringstream in("1 10");
+        int first;
+        int second;
+        CPPUNIT_ASSERT_EQUAL(true, collatz_read(in, first, second));
+        CPPUNIT_ASSERT_EQUAL(1, first);
+        CPPUNIT_ASSERT_EQUAL(10, second);
+    }
+
+    void test_read_single_line() {
+        std::istringstream in("50 50\n");
+        int first;
+        int second;
+        CPPUNIT_ASSERT_EQUAL(true, collatz_read(in, first, second));
+        CPPUNIT_ASSERT_EQUAL(50, first);
+        CPPUNIT_ASSERT_EQUAL(50, second);
+    }
+
+    void test_read_blank_lines() {
+        std::istringstream in("1 10\n\n100 20\n");
+        int first;
+        int second;
+        CPPUNIT_ASSERT_EQUAL(true, collatz_read(in, first, second));
+        CPPUNIT_ASSERT_EQUAL(1, first);
+        CPPUNIT_ASSERT_EQUAL(10, second);
+        CPPUNIT_ASSERT_EQUAL(true, collatz_read(in, first, second));
+        CPPUNIT_ASSERT_EQUAL(100, first);
+        CPPUNIT_ASSERT_EQUAL(20, second);
+    }
+
+    // ----
+    // eval
+    // ----
+
+    void test_eval_non_cached_range() { CPPUNIT_ASSERT_EQUAL(20, collatz_eval(1, 10)); }
+    void test_eval_one() { CPPUNIT_ASSERT_EQUAL(1, collatz_eval(1, 1)); }
+    void test_eval_single() { CPPUNIT_ASSERT_EQUAL(7, collatz_eval(10, 10)); }
+    void test_eval_largest_overflowing_number() { CPPUNIT_ASSERT_EQUAL(440, collatz_eval(997823, 997823)); }
+    void test_eval_entire_range() { CPPUNIT_ASSERT_EQUAL(525, collatz_eval(1, 1000000)); }
+    void test_eval_range_that_intercepts_the_max() { CPPUNIT_ASSERT_EQUAL(525, collatz_eval(345262, 959069)); }
+
+    // ----
+    // get_cycle_length
+    // ----
+
+    void test_get_cycle_length_one() { CPPUNIT_ASSERT_EQUAL(1, get_cycle_length(1)); }
+    void test_get_cycle_length_power_of_two() { CPPUNIT_ASSERT_EQUAL(9, get_cycle_length(256)); }
+    void test_get_cycle_length_signed_int32_overflow() { CPPUNIT_ASSERT_EQUAL(248, get_cycle_length(113383)); } // overflows a signed 32 bit integer
+    void test_get_cycle_length_unsigned_int32_overflow_min() { CPPUNIT_ASSERT_EQUAL(184, get_cycle_length(159487)); } // the smallest number that overflows an unsigned 32 bit integer
+    void test_get_cycle_length_unsigned_int32_overflow_max() { CPPUNIT_ASSERT_EQUAL(440, get_cycle_length(997823)); } // the largest number (<= 1000000) that overflows an unsigned 32 bit integer
+    void test_get_cycle_length_max() { CPPUNIT_ASSERT_EQUAL(525, get_cycle_length(837799)); }
+
+    // -----
+    // print
+    // -----
+
+    void test_print_one_line() {
+        std::ostringstream out;
+        collatz_print(out, 1, 10, 20);
+        CPPUNIT_ASSERT(out.str() == "1 10 20\n");
+    }
+
+    void test_print_multiple_lines() {
+        std::ostringstream out;
+        collatz_print(out, 1, 10, 20);
+        collatz_print(out, 100, 100, 26);
+        CPPUNIT_ASSERT(out.str() == "1 10 20\n100 100 26\n");
+    }
+
+    void test_print_illogical() {
+        std::ostringstream out;
+        collatz_print(out, 10, 1, 55);
+        CPPUNIT_ASSERT(out.str() == "10 1 55\n");
+    }
+
+    // -----
+    // solve
+    // -----
+
+    void test_solve_multiline() {
+        std::istringstream in("1 10\n100 200\n201 210\n900 1000\n");
+        std::ostringstream out;
+        collatz_solve(in, out);
+        CPPUNIT_ASSERT(out.str() == "1 10 20\n100 200 125\n201 210 89\n900 1000 174\n");
+    }
+
+    void test_solve_single_line() {
+        std::istringstream in("100 100\n");
+        std::ostringstream out;
+        collatz_solve(in, out);
+        CPPUNIT_ASSERT(out.str() == "100 100 26\n");
+    }
+
+    void test_solve_no_terminal_newline() {
+        std::istringstream in("10 1");
+        std::ostringstream out;
+        collatz_solve(in, out);
+        CPPUNIT_ASSERT(out.str() == "10 1 20\n");
+    }
+
+    void test_solve_blank_lines() {
+        std::istringstream in("10 1\n\n10 1\n");
+        std::ostringstream out;
+        collatz_solve(in, out);
+        CPPUNIT_ASSERT(out.str() == "10 1 20\n10 1 20\n");
+    }
+
+    // -----
+    // suite
+    // -----
+
+    CPPUNIT_TEST_SUITE(TestCollatz);
+
+    CPPUNIT_TEST(test_read_multiline);
+    CPPUNIT_TEST(test_read_single_line);
+    CPPUNIT_TEST(test_read_no_terminal_newline);
+    CPPUNIT_TEST(test_read_blank_lines);
+
+    CPPUNIT_TEST(test_print_one_line);
+    CPPUNIT_TEST(test_print_illogical);
+    CPPUNIT_TEST(test_print_multiple_lines);
+
+    // solve initializes the cache, so it's necessary for it to come first
+    CPPUNIT_TEST(test_solve_multiline);
+    CPPUNIT_TEST(test_solve_blank_lines);
+    CPPUNIT_TEST(test_solve_single_line);
+    CPPUNIT_TEST(test_solve_no_terminal_newline);
+
+    CPPUNIT_TEST(test_get_cycle_length_max);
+    CPPUNIT_TEST(test_get_cycle_length_one);
+    CPPUNIT_TEST(test_get_cycle_length_signed_int32_overflow);
+    CPPUNIT_TEST(test_get_cycle_length_power_of_two);
+    CPPUNIT_TEST(test_get_cycle_length_unsigned_int32_overflow_max);
+    CPPUNIT_TEST(test_get_cycle_length_unsigned_int32_overflow_min);
+
+    CPPUNIT_TEST(test_eval_one);
+    CPPUNIT_TEST(test_eval_entire_range);
+    CPPUNIT_TEST(test_eval_largest_overflowing_number);
+    CPPUNIT_TEST(test_eval_single);
+    CPPUNIT_TEST(test_eval_non_cached_range);
+    CPPUNIT_TEST(test_eval_range_that_intercepts_the_max);
+
+    CPPUNIT_TEST_SUITE_END();
+
+};
+
+// ----
+// main
+// ----
+
+int main() {
+    using namespace std;
+    ios_base::sync_with_stdio(false); // turn off synchronization with C I/O
+    cout << "TestCollatz.c++" << endl;
+
+    CppUnit::TextTestRunner runner;
+    runner.addTest(TestCollatz::suite());
+    runner.run();
+
+    cout << "Done." << endl;
+    return 0;
+}
