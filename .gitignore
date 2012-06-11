@@ -1,0 +1,3 @@
+# Ignore files ending in .a, .o, or .app
+*.[oa]
+*.app

@@ -1,0 +1,43 @@
+==15747== Memcheck, a memory error detector
+==15747== Copyright (C) 2002-2009, and GNU GPL'd, by Julian Seward et al.
+==15747== Using Valgrind-3.6.0.SVN-Debian and LibVEX; rerun with -h for copyright info
+==15747== Command: TestCollatz.c++.app
+==15747== 
+TestCollatz.c++
+==15747== Conditional jump or move depends on uninitialised value(s)
+==15747==    at 0x402812: collatz_read(std::istream&, int&, int&) (in /v/filer4b/v38q001/rshwarts/Documents/STL/cs378_collatz/cs378_collatz/TestCollatz.c++.app)
+==15747==    by 0x4044D1: TestCollatz::test_read4() (in /v/filer4b/v38q001/rshwarts/Documents/STL/cs378_collatz/cs378_collatz/TestCollatz.c++.app)
+==15747==    by 0x40B271: CppUnit::TestCaller<TestCollatz>::runTest() (in /v/filer4b/v38q001/rshwarts/Documents/STL/cs378_collatz/cs378_collatz/TestCollatz.c++.app)
+==15747==    by 0x4E528E9: CppUnit::TestCaseMethodFunctor::operator()() const (in /usr/lib/libcppunit-1.12.so.1.0.0)
+==15747==    by 0x4E45E33: CppUnit::DefaultProtector::protect(CppUnit::Functor const&, CppUnit::ProtectorContext const&) (in /usr/lib/libcppunit-1.12.so.1.0.0)
+==15747==    by 0x4E4EE66: CppUnit::ProtectorChain::protect(CppUnit::Functor const&, CppUnit::ProtectorContext const&) (in /usr/lib/libcppunit-1.12.so.1.0.0)
+==15747==    by 0x4E59593: CppUnit::TestResult::protect(CppUnit::Functor const&, CppUnit::Test*, std::string const&) (in /usr/lib/libcppunit-1.12.so.1.0.0)
+==15747==    by 0x4E52687: CppUnit::TestCase::run(CppUnit::TestResult*) (in /usr/lib/libcppunit-1.12.so.1.0.0)
+==15747==    by 0x4E52DC2: CppUnit::TestComposite::doRunChildTests(CppUnit::TestResult*) (in /usr/lib/libcppunit-1.12.so.1.0.0)
+==15747==    by 0x4E52CE5: CppUnit::TestComposite::run(CppUnit::TestResult*) (in /usr/lib/libcppunit-1.12.so.1.0.0)
+==15747==    by 0x4E591B9: CppUnit::TestResult::runTest(CppUnit::Test*) (in /usr/lib/libcppunit-1.12.so.1.0.0)
+==15747==    by 0x4E5B5E2: CppUnit::TestRunner::run(CppUnit::TestResult&, std::string const&) (in /usr/lib/libcppunit-1.12.so.1.0.0)
+==15747== 
+.........................
+
+
+OK (25 tests)
+
+
+Done.
+==15747== 
+==15747== HEAP SUMMARY:
+==15747==     in use at exit: 122,880 bytes in 6 blocks
+==15747==   total heap usage: 671 allocs, 665 frees, 210,510 bytes allocated
+==15747== 
+==15747== LEAK SUMMARY:
+==15747==    definitely lost: 0 bytes in 0 blocks
+==15747==    indirectly lost: 0 bytes in 0 blocks
+==15747==      possibly lost: 0 bytes in 0 blocks
+==15747==    still reachable: 122,880 bytes in 6 blocks
+==15747==         suppressed: 0 bytes in 0 blocks
+==15747== Rerun with --leak-check=full to see details of leaked memory
+==15747== 
+==15747== For counts of detected and suppressed errors, rerun with: -v
+==15747== Use --track-origins=yes to see where uninitialised values come from
+==15747== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)

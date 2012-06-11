@@ -47,38 +47,30 @@ struct TestCollatz : CppUnit::TestFixture {
         CPPUNIT_ASSERT(b == true);
         CPPUNIT_ASSERT(i ==    1);
         CPPUNIT_ASSERT(j ==   10);}
-        
-	void test_read1 () 
-	{
-        std::istringstream r("11 1999\n");
-        int i;
-        int j;
-        const bool b = collatz_read(r, i, j);
-        CPPUNIT_ASSERT(b == true);
-        CPPUNIT_ASSERT(i ==    11);
-        CPPUNIT_ASSERT(j ==   1999);
+
+    void test_read_2() {
+		std::istringstream r("40 30");
+		int i, j;
+		const bool b = collatz_read(r, i, j);
+		CPPUNIT_ASSERT(b == true);
+		CPPUNIT_ASSERT(i == 40);
+		CPPUNIT_ASSERT(j == 30);
 	}
 
-	void test_read2 () 
-	{
-        std::istringstream r("100 2000\n");
-        int i;
-        int j;
-        const bool b = collatz_read(r, i, j);
-        CPPUNIT_ASSERT(b == true);
-        CPPUNIT_ASSERT(i ==    100);
-        CPPUNIT_ASSERT(j ==   2000);
+	void test_read_3() {
+		std::istringstream r("  5000     5000");
+		int i, j;
+		const bool b = collatz_read(r, i, j);
+		CPPUNIT_ASSERT(b == true);
+		CPPUNIT_ASSERT(i == 5000);
+		CPPUNIT_ASSERT(j == 5000);
 	}
 
-	void test_read3 () 
-	{
-        std::istringstream r("333 4444\n");
-        int i;
-        int j;
-        const bool b = collatz_read(r, i, j);
-        CPPUNIT_ASSERT(b == true);
-        CPPUNIT_ASSERT(i ==    333);
-        CPPUNIT_ASSERT(j ==   4444);
+	void test_read_4() {
+		std::istringstream r("");
+		int i, j;
+		const bool b = collatz_read(r, i, j);
+		CPPUNIT_ASSERT(b == false);
 	}
     // ----
     // eval
@@ -100,17 +92,19 @@ struct TestCollatz : CppUnit::TestFixture {
         const int v = collatz_eval(900, 1000);
         CPPUNIT_ASSERT(v == 174);}
 
-    void test_eval_5 () {
-        const int v = collatz_eval(1, 1);
-        CPPUNIT_ASSERT(v == 1);}
-   
-    void test_eval_6 () {
-        const int v = collatz_eval(999999, 999999);
-        CPPUNIT_ASSERT(v == 259);}
+    void test_eval_5() {
+		const int v = collatz_eval(5100, 5000);
+		CPPUNIT_ASSERT(v == 179);
+	}
 
-    void test_eval_7 () {
-        const int v = collatz_eval(500000, 500000);
-        CPPUNIT_ASSERT(v == 152);}
+	void test_eval_6() {
+		const int v = collatz_eval(700000, 900000);
+		CPPUNIT_ASSERT(v == 525);
+	}
+	void test_eval_7() {
+                const int v = collatz_eval(1, 4);
+                CPPUNIT_ASSERT(v == 8);
+        }
 
 
     // -----
@@ -121,21 +115,18 @@ struct TestCollatz : CppUnit::TestFixture {
         std::ostringstream w;
         collatz_print(w, 1, 10, 20);
         CPPUNIT_ASSERT(w.str() == "1 10 20\n");}
-
-    void test_print1 () {
+    
+    void test_print_2() {
         std::ostringstream w;
-        collatz_print(w, 2, 22, 222);
-        CPPUNIT_ASSERT(w.str() == "2 22 222\n");}
+        collatz_print(w, 999999, 1, 476);
+        CPPUNIT_ASSERT(w.str() == "999999 1 476\n");
+	}
 
-    void test_print2 () {
+    void test_print_3() {
         std::ostringstream w;
-        collatz_print(w, 1, 9, 99);
-        CPPUNIT_ASSERT(w.str() == "1 9 99\n");}
-
-    void test_print3 () {
-        std::ostringstream w;
-        collatz_print(w, 11, 1111, 111111);
-        CPPUNIT_ASSERT(w.str() == "11 1111 111111\n");}
+        collatz_print(w, 100, 100, 26);
+        CPPUNIT_ASSERT(w.str() == "100 100 26\n");
+	}
 
     // -----
     // solve
@@ -147,49 +138,28 @@ struct TestCollatz : CppUnit::TestFixture {
         collatz_solve(r, w);
         CPPUNIT_ASSERT(w.str() == "1 10 20\n100 200 125\n201 210 89\n900 1000 174\n");}
 
-    void test_solve1 () {
-        std::istringstream r("\n");
+    void test_solve_2() {
+        std::istringstream r("600000 900000\n");
         std::ostringstream w;
         collatz_solve(r, w);
-        CPPUNIT_ASSERT(w.str() == "");}
+        CPPUNIT_ASSERT(w.str() == "600000 900000 525\n");
+	}
 
-    void test_solve2 () {
-        std::istringstream r("489121 294235\n129404 724429\n181954 534777\n726150 875049\n");
+    void test_solve_3() {
+        std::istringstream r("\n\n\n");
         std::ostringstream w;
         collatz_solve(r, w);
-        CPPUNIT_ASSERT(w.str() == "489121 294235 449\n129404 724429 470\n181954 534777 470\n726150 875049 468\n");}
-
-    void test_solve3 () {
-        std::istringstream r("583861 200202\n424679 377541\n814840 124145\n205639 850289\n");
-        std::ostringstream w;
-        collatz_solve(r, w);
-        CPPUNIT_ASSERT(w.str() == "583861 200202 470\n424679 377541 449\n814840 124145 470\n205639 850289 470\n");}
-    // -----
-    // populate
-    // -----
-
-    void test_populate_1 () {
-        populate(20);
-        CPPUNIT_ASSERT(cache[20] == 8);}
-
-    void test_populate_2 () {
-        populate(3);
-        CPPUNIT_ASSERT(cache[3] == 8);}
-
-    void test_populate_3 () {
-        populate(4);
-        CPPUNIT_ASSERT(cache[4] == 3);}
-
-
+        CPPUNIT_ASSERT(w.str() == "");
+	}
     // -----
     // suite
     // -----
 
     CPPUNIT_TEST_SUITE(TestCollatz);
     CPPUNIT_TEST(test_read);
-    CPPUNIT_TEST(test_read1);
-    CPPUNIT_TEST(test_read2);
-    CPPUNIT_TEST(test_read3);
+    CPPUNIT_TEST(test_read_2);
+    CPPUNIT_TEST(test_read_3);
+    CPPUNIT_TEST(test_read_4);
     CPPUNIT_TEST(test_eval_1);
     CPPUNIT_TEST(test_eval_2);
     CPPUNIT_TEST(test_eval_3);
@@ -198,16 +168,11 @@ struct TestCollatz : CppUnit::TestFixture {
     CPPUNIT_TEST(test_eval_6);
     CPPUNIT_TEST(test_eval_7);
     CPPUNIT_TEST(test_print);
-    CPPUNIT_TEST(test_print1);
-    CPPUNIT_TEST(test_print2);
-    CPPUNIT_TEST(test_print3);
+    CPPUNIT_TEST(test_print_2);
+    CPPUNIT_TEST(test_print_3);
     CPPUNIT_TEST(test_solve);
-    CPPUNIT_TEST(test_solve1);
-    CPPUNIT_TEST(test_solve2);
-    CPPUNIT_TEST(test_solve3);
-    CPPUNIT_TEST(test_populate_1);
-    CPPUNIT_TEST(test_populate_2);
-    CPPUNIT_TEST(test_populate_3);
+    CPPUNIT_TEST(test_solve_2);
+    CPPUNIT_TEST(test_solve_3);
     CPPUNIT_TEST_SUITE_END();};
 
 // ----
