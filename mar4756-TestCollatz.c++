@@ -165,6 +165,23 @@ struct TestCollatz : CppUnit::TestFixture {
         collatz_solve(r, w);
         CPPUNIT_ASSERT(w.str() == "583861 200202 470\n424679 377541 449\n814840 124145 470\n205639 850289 470\n");}
     // -----
+    // populate
+    // -----
+
+    void test_populate_1 () {
+        populate(20);
+        CPPUNIT_ASSERT(cache[20] == 8);}
+
+    void test_populate_2 () {
+        populate(3);
+        CPPUNIT_ASSERT(cache[3] == 8);}
+
+    void test_populate_3 () {
+        populate(4);
+        CPPUNIT_ASSERT(cache[4] == 3);}
+
+
+    // -----
     // suite
     // -----
 
@@ -188,6 +205,9 @@ struct TestCollatz : CppUnit::TestFixture {
     CPPUNIT_TEST(test_solve1);
     CPPUNIT_TEST(test_solve2);
     CPPUNIT_TEST(test_solve3);
+    CPPUNIT_TEST(test_populate_1);
+    CPPUNIT_TEST(test_populate_2);
+    CPPUNIT_TEST(test_populate_3);
     CPPUNIT_TEST_SUITE_END();};
 
 // ----
