@@ -1,0 +1,65 @@
+==22058== Memcheck, a memory error detector
+==22058== Copyright (C) 2002-2009, and GNU GPL'd, by Julian Seward et al.
+==22058== Using Valgrind-3.6.0.SVN-Debian and LibVEX; rerun with -h for copyright info
+==22058== Command: TestCollatz.c++.app
+==22058== 
+TestCollatz.c++
+...F.F.F..F.F.F.F
+
+
+!!!FAILURES!!!
+Test Results:
+Run:  10   Failures: 7   Errors: 0
+
+
+1) test: TestCollatz::test_eval_2 (F) line: 62 TestCollatz.c++
+assertion failed
+- Expression: v == 125
+
+
+2) test: TestCollatz::test_eval_3 (F) line: 66 TestCollatz.c++
+assertion failed
+- Expression: v == 89
+
+
+3) test: TestCollatz::test_eval_4 (F) line: 70 TestCollatz.c++
+assertion failed
+- Expression: v == 174
+
+
+4) test: TestCollatz::test_print2 (F) line: 86 TestCollatz.c++
+assertion failed
+- Expression: w.str() == "1 10 20\n"
+
+
+5) test: TestCollatz::test_print3 (F) line: 91 TestCollatz.c++
+assertion failed
+- Expression: w.str() == "100 350 144\n"
+
+
+6) test: TestCollatz::test_print4 (F) line: 96 TestCollatz.c++
+assertion failed
+- Expression: w.str() == "400 733 170\n"
+
+
+7) test: TestCollatz::test_solve (F) line: 107 TestCollatz.c++
+assertion failed
+- Expression: w.str() == "1 10 20\n100 200 125\n201 210 89\n900 1000 174\n"
+
+
+Done.
+==22058== 
+==22058== HEAP SUMMARY:
+==22058==     in use at exit: 122,880 bytes in 6 blocks
+==22058==   total heap usage: 564 allocs, 558 frees, 191,127 bytes allocated
+==22058== 
+==22058== LEAK SUMMARY:
+==22058==    definitely lost: 0 bytes in 0 blocks
+==22058==    indirectly lost: 0 bytes in 0 blocks
+==22058==      possibly lost: 0 bytes in 0 blocks
+==22058==    still reachable: 122,880 bytes in 6 blocks
+==22058==         suppressed: 0 bytes in 0 blocks
+==22058== Rerun with --leak-check=full to see details of leaked memory
+==22058== 
+==22058== For counts of detected and suppressed errors, rerun with: -v
+==22058== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 22 from 7)
