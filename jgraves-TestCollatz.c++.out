@@ -1,0 +1,35 @@
+==28153== Memcheck, a memory error detector
+==28153== Copyright (C) 2002-2009, and GNU GPL'd, by Julian Seward et al.
+==28153== Using Valgrind-3.6.0.SVN-Debian and LibVEX; rerun with -h for copyright info
+==28153== Command: TestCollatz.c++.app
+==28153== 
+TestCollatz.c++
+.........F..
+
+
+!!!FAILURES!!!
+Test Results:
+Run:  11   Failures: 1   Errors: 0
+
+
+1) test: TestCollatz::test_solve (F) line: 117 Testcollatz.c++
+assertion failed
+- Expression: w.str() == "1 10 20\n100 200 125\n201 210 89\n900 1000 174\n"
+
+
+Done.
+==28153== 
+==28153== HEAP SUMMARY:
+==28153==     in use at exit: 122,880 bytes in 6 blocks
+==28153==   total heap usage: 362 allocs, 356 frees, 165,226 bytes allocated
+==28153== 
+==28153== LEAK SUMMARY:
+==28153==    definitely lost: 0 bytes in 0 blocks
+==28153==    indirectly lost: 0 bytes in 0 blocks
+==28153==      possibly lost: 0 bytes in 0 blocks
+==28153==    still reachable: 122,880 bytes in 6 blocks
+==28153==         suppressed: 0 bytes in 0 blocks
+==28153== Rerun with --leak-check=full to see details of leaked memory
+==28153== 
+==28153== For counts of detected and suppressed errors, rerun with: -v
+==28153== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 22 from 7)
